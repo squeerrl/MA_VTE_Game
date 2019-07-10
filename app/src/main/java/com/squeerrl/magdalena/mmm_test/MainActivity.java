@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity  {
             info.setText("Gefunden " + sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE).getName());
 
         } else {
-            info.setText("Nichts Gefunden");
+            info.setText("Nichts Gefunden blabla");
         }
 
         _initListeners();
