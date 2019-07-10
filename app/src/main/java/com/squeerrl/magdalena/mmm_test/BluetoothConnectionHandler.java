@@ -21,7 +21,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-public class BTConnectionHandler {
+public class BluetoothConnectionHandler {
 
     public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     public static final int MESSAGE_READ=0;
@@ -78,7 +78,7 @@ public class BTConnectionHandler {
         }
     };
 
-    BTConnectionHandler(Activity activity, Context context) {
+    BluetoothConnectionHandler(Activity activity, Context context) {
         mContext = context;
         mActivity = activity;
 
@@ -87,7 +87,7 @@ public class BTConnectionHandler {
         startAcceptingConnection();
     }
 
-    public Set<BluetoothDevice> initializeBluetooth()
+    public Set<BluetoothDevice> getPairedBluetoothDevices()
     {
         if (bluetoothAdapter == null) {
             // Device doesn't support Bluetooth
@@ -122,7 +122,7 @@ public class BTConnectionHandler {
     }
 
 
-    public class AcceptThread extends Thread
+    private class AcceptThread extends Thread
     {
         private final BluetoothServerSocket serverSocket;
 
