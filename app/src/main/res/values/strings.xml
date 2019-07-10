@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">MMM_Test</string>
     <string name="action_settings">Settings</string>
+    <string name="button_gyro">Sender starten</string>
+    <string name="button_screen">Empfänger starten</string>
 </resources>
