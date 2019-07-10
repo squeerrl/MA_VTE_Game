@@ -19,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/button_gyro"
         android:layout_width="180dp"
         android:layout_height="60dp"
         android:layout_marginStart="134dp"
@@ -26,15 +27,14 @@
         android:layout_marginEnd="135dp"
         android:layout_marginBottom="8dp"
         android:text="@string/button_gyro"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/button_screen"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.659"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.811" />
+        app:layout_constraintVertical_bias="0.791" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button_screen"
         android:layout_width="180dp"
         android:layout_height="60dp"
         android:layout_marginStart="134dp"

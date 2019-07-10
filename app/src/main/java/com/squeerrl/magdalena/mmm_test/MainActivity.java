@@ -1,9 +1,8 @@
 package com.squeerrl.magdalena.mmm_test;
 
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity  {
@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity  {
         } else {
             info.setText("Nichts Gefunden");
         }
+
+        _initListeners();
     }
 
     /*@Override
@@ -60,6 +62,28 @@ public class MainActivity extends AppCompatActivity  {
         super.onPause();
         sensorManager.unregisterListener((SensorEventListener) this);
     }*/
+
+    private void _initListeners(){
+        // get buttons
+        Button screenButton = findViewById(R.id.button_screen);
+        Button gyroButton = findViewById(R.id.button_gyro);
+
+        // setup listeners
+        screenButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ScreenActivity.class);
+                startActivity(intent);
+            }
+        });
+        gyroButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, GyroActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
