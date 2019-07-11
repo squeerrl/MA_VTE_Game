@@ -3,5 +3,8 @@
     <string name="action_settings">Settings</string>
     <string name="button_gyro">Sender starten</string>
     <string name="button_screen">Empfänger starten</string>
-    <string name="textView_magneticField">Magnetic Field Data</string>
+    <string name="textView_accelerometerX">X</string>
+    <string name="textView_accelerometerY">Y</string>
+    <string name="textView_accelerometerZ">Z</string>
+    <string name="move">Beschleunigung</string>
 </resources>
