@@ -8,11 +8,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.Objects;
 import java.util.Set;
 
-public class ScreenActivity extends AppCompatActivity {
+public class ScreenActivity extends AppCompatActivity implements IMessageCallback {
 
     private BluetoothConnectionHandler btConnectionHandler;
     ListView listViewPairedDevices;
@@ -25,6 +26,7 @@ public class ScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_screen);
 
         btConnectionHandler = new BluetoothConnectionHandler(this, getApplicationContext());
+        btConnectionHandler.onMessageReceived(this);
 
         initializeLayout();
         initializeClicks();
@@ -60,5 +62,10 @@ public class ScreenActivity extends AppCompatActivity {
                 adapterPairedDevices.add(deviceName + "\n" + deviceHardwareAddress);
             }
         }
+    }
+
+    @Override
+    public void onMessageReceived(String msg) {
+        Toast.makeText(this, "Message received: " + msg, Toast.LENGTH_SHORT).show();
     }
 }
