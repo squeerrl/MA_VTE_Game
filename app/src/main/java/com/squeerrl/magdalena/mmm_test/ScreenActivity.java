@@ -13,7 +13,7 @@ import android.widget.Toast;
 import java.util.Objects;
 import java.util.Set;
 
-public class ScreenActivity extends AppCompatActivity implements IMessageCallback {
+public class ScreenActivity extends AppCompatActivity implements IBluetoothCallbacks {
 
     private BluetoothConnectionHandler btConnectionHandler;
     ListView listViewPairedDevices;
@@ -26,10 +26,16 @@ public class ScreenActivity extends AppCompatActivity implements IMessageCallbac
         setContentView(R.layout.activity_screen);
 
         btConnectionHandler = new BluetoothConnectionHandler(this, getApplicationContext());
-        btConnectionHandler.onMessageReceived(this);
+        btConnectionHandler.setCallbackHandler(this);
 
         initializeLayout();
         initializeClicks();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        btConnectionHandler.destory();
     }
 
     public void initializeClicks()
@@ -67,5 +73,11 @@ public class ScreenActivity extends AppCompatActivity implements IMessageCallbac
     @Override
     public void onMessageReceived(String msg) {
         Toast.makeText(this, "Message received: " + msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onConnect() {
+        String handshakeMessage = "hallo";
+        btConnectionHandler.write(handshakeMessage.getBytes());
     }
 }

@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-public class SensorActivity extends AppCompatActivity implements SensorEventListener, IMessageCallback{
+public class SensorActivity extends AppCompatActivity implements SensorEventListener, IBluetoothCallbacks {
 
     private SensorManager sensorManager;
     private Sensor accelerometer;
@@ -44,8 +44,14 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         accelerometerMove = (TextView) findViewById(R.id.move);
 
         btConnectionHandler = new BluetoothConnectionHandler(this, getApplicationContext());
-        btConnectionHandler.onMessageReceived(this);
+        btConnectionHandler.setCallbackHandler(this);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        btConnectionHandler.destory();
     }
 
     protected void onResume() {
@@ -117,5 +123,10 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     @Override
     public void onMessageReceived(String msg) {
         btConnectionHandler.write("abcd".getBytes());
+    }
+
+    @Override
+    public void onConnect() {
+
     }
 }

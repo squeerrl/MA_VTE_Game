@@ -10,15 +10,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -26,7 +22,6 @@ public class BluetoothConnectionHandler {
 
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private static final int MESSAGE_READ = 0;
-    private static final int MESSAGE_WRITE = 1;
     private static final int CONNECTING = 2;
     private static final int CONNECTED = 3;
     private static final int NO_SOCKET_FOUND = 4;
@@ -35,34 +30,35 @@ public class BluetoothConnectionHandler {
     private Context mContext;
     private Activity mActivity;
     private BluetoothAdapter bluetoothAdapter;
-    private String bluetooth_message = "00";
 
     private ConnectedThread connectedThread;
     private AcceptThread acceptThread;
-    private IMessageCallback messageCallback;
+    private ConnectThread connectThread;
+
+    private IBluetoothCallbacks callbackHandler;
 
     @SuppressLint("HandlerLeak")
     Handler mHandler = new Handler() {
         @Override
-        public void handleMessage(Message msg_type) {
-            super.handleMessage(msg_type);
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
 
-            switch (msg_type.what) {
+            switch (msg.what) {
                 case MESSAGE_READ:
 
-                    byte[] readbuf = (byte[]) msg_type.obj;
-                    String stringReceived = new String(readbuf);
+                    byte[] readBuf = (byte[]) msg.obj;
+                    String stringReceived = new String(readBuf);
 
-                    //do some task based on recieved string
-                    Log.d("[Connection Handler]", "message received!!" + stringReceived);
-                    if (messageCallback != null) {
-                        messageCallback.onMessageReceived(stringReceived);
+                    if (callbackHandler != null) {
+                        callbackHandler.onMessageReceived(stringReceived);
                     }
 
                     break;
                 case CONNECTED:
                     Toast.makeText(mContext, "Connected", Toast.LENGTH_SHORT).show();
-                    write("Hallo".getBytes());
+                    if (callbackHandler != null) {
+                        callbackHandler.onConnect();
+                    }
                     break;
 
                 case CONNECTING:
@@ -107,14 +103,14 @@ public class BluetoothConnectionHandler {
 
     public void connect(BluetoothDevice device) {
 
-        ConnectThread connectThread = new ConnectThread(device);
+        connectThread = new ConnectThread(device);
         connectThread.start();
 
         Toast.makeText(mContext, "device choosen " + device.getName(), Toast.LENGTH_SHORT).show();
     }
 
-    public void onMessageReceived(IMessageCallback callback) {
-        messageCallback = callback;
+    public void setCallbackHandler(IBluetoothCallbacks callback) {
+        callbackHandler = callback;
     }
 
     public void write(byte[] msg) {
@@ -124,8 +120,18 @@ public class BluetoothConnectionHandler {
     }
 
     public void destory() {
-        connectedThread.cancel();
-        acceptThread.cancel();
+        if(connectedThread != null) {
+            connectedThread.cancel();
+            connectedThread.interrupt();
+        }
+        if(acceptThread != null) {
+            acceptThread.cancel();
+            acceptThread.interrupt();
+        }
+        if(connectThread != null) {
+            connectThread.cancel();
+            connectThread.interrupt();
+        }
     }
 
 
