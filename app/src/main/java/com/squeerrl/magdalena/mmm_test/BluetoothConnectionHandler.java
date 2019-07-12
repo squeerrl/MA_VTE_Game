@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -50,22 +51,14 @@ public class BluetoothConnectionHandler {
                 case MESSAGE_READ:
 
                     byte[] readbuf = (byte[]) msg_type.obj;
-                    String stringRecieved = new String(readbuf);
+                    String stringReceived = new String(readbuf);
 
                     //do some task based on recieved string
+                    Log.d("[Connection Handler]", "message received!!" + stringReceived);
                     if (messageCallback != null) {
-                        messageCallback.onMessageReceived(stringRecieved);
+                        messageCallback.onMessageReceived(stringReceived);
                     }
 
-                    break;
-                case MESSAGE_WRITE:
-
-                    if (msg_type.obj != null) {
-                        if(connectedThread == null){
-                            connectedThread = new ConnectedThread((BluetoothSocket) msg_type.obj);
-                        }
-                        connectedThread.write(bluetooth_message.getBytes());
-                    }
                     break;
                 case CONNECTED:
                     Toast.makeText(mContext, "Connected", Toast.LENGTH_SHORT).show();
@@ -166,8 +159,7 @@ public class BluetoothConnectionHandler {
                 // If a connection was accepted
                 if (socket != null) {
                     // Do work to manage the connection (in a separate thread)
-                    mHandler.obtainMessage(CONNECTED).sendToTarget();
-                    if(connectedThread != null){
+                    if (connectedThread != null) {
                         connectedThread = new ConnectedThread(socket);
                     }
                 }
@@ -222,8 +214,7 @@ public class BluetoothConnectionHandler {
             }
 
             // Do work to manage the connection (in a separate thread)
-            bluetooth_message = "Initial message";
-            mHandler.obtainMessage(MESSAGE_WRITE, mmSocket).sendToTarget();
+            connectedThread = new ConnectedThread(mmSocket);
         }
 
         /**
@@ -259,6 +250,7 @@ public class BluetoothConnectionHandler {
 
             mmInStream = tmpIn;
             mmOutStream = tmpOut;
+            mHandler.obtainMessage(CONNECTED).sendToTarget();
         }
 
         public void run() {
