@@ -157,10 +157,8 @@ public class BluetoothConnectionHandler {
                 // If a connection was accepted
                 if (socket != null) {
                     // Do work to manage the connection (in a separate thread)
-                    if (connectedThread != null) {
-                        connectedThread = new ConnectedThread(socket);
-                        connectedThread.start();
-                    }
+                    connectedThread = new ConnectedThread(socket);
+                    connectedThread.start();
                 }
             }
         }
