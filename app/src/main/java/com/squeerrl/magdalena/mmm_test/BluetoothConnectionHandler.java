@@ -61,7 +61,7 @@ public class BluetoothConnectionHandler {
                 case MESSAGE_WRITE:
 
                     if (msg_type.obj != null) {
-                        if(connectedThread != null){
+                        if(connectedThread == null){
                             connectedThread = new ConnectedThread((BluetoothSocket) msg_type.obj);
                         }
                         connectedThread.write(bluetooth_message.getBytes());
