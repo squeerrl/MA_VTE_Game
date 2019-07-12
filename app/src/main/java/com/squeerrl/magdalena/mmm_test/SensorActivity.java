@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-public class SensorActivity extends AppCompatActivity implements SensorEventListener {
+public class SensorActivity extends AppCompatActivity implements SensorEventListener, IMessageCallback{
 
     private SensorManager sensorManager;
     private Sensor accelerometer;
@@ -29,6 +29,8 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     boolean topOfThreshold;
     boolean bottomOfThreshold;
 
+    private BluetoothConnectionHandler btConnectionHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,9 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         accelerometerX = (TextView) findViewById(R.id.accelerometerX);
         accelerometerY = (TextView) findViewById(R.id.accelerometerY);
         accelerometerMove = (TextView) findViewById(R.id.move);
+
+        btConnectionHandler = new BluetoothConnectionHandler(this, getApplicationContext());
+        btConnectionHandler.onMessageReceived(this);
 
     }
 
@@ -107,5 +112,10 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
+    }
+
+    @Override
+    public void onMessageReceived(String msg) {
+        btConnectionHandler.write("abcd".getBytes());
     }
 }
