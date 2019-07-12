@@ -60,10 +60,12 @@ public class BluetoothConnectionHandler {
                     break;
                 case MESSAGE_WRITE:
 
-                    if (msg_type.obj != null && connectedThread == null) {
-                        connectedThread = new ConnectedThread((BluetoothSocket) msg_type.obj);
+                    if (msg_type.obj != null) {
+                        if(connectedThread != null){
+                            connectedThread = new ConnectedThread((BluetoothSocket) msg_type.obj);
+                        }
+                        connectedThread.write(bluetooth_message.getBytes());
                     }
-                    connectedThread.write(bluetooth_message.getBytes());
                     break;
                 case CONNECTED:
                     Toast.makeText(mContext, "Connected", Toast.LENGTH_SHORT).show();
@@ -165,6 +167,9 @@ public class BluetoothConnectionHandler {
                 if (socket != null) {
                     // Do work to manage the connection (in a separate thread)
                     mHandler.obtainMessage(CONNECTED).sendToTarget();
+                    if(connectedThread != null){
+                        connectedThread = new ConnectedThread(socket);
+                    }
                 }
             }
         }
