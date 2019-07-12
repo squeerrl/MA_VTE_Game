@@ -88,9 +88,6 @@ public class BluetoothConnectionHandler {
         Toast.makeText(mContext, "accepting", Toast.LENGTH_SHORT).show();
     }
 
-    public void onMessageReceived(String msg) {
-
-    }
 
     public Set<BluetoothDevice> getPairedBluetoothDevices() {
         if (bluetoothAdapter == null) {
@@ -162,6 +159,7 @@ public class BluetoothConnectionHandler {
                     // Do work to manage the connection (in a separate thread)
                     if (connectedThread != null) {
                         connectedThread = new ConnectedThread(socket);
+                        connectedThread.start();
                     }
                 }
             }
@@ -216,6 +214,7 @@ public class BluetoothConnectionHandler {
 
             // Do work to manage the connection (in a separate thread)
             connectedThread = new ConnectedThread(mmSocket);
+            connectedThread.start();
         }
 
         /**
