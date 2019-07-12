@@ -62,6 +62,7 @@ public class BluetoothConnectionHandler {
                     break;
                 case CONNECTED:
                     Toast.makeText(mContext, "Connected", Toast.LENGTH_SHORT).show();
+                    write("Hallo".getBytes());
                     break;
 
                 case CONNECTING:
