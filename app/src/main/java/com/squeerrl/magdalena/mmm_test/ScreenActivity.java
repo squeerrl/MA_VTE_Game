@@ -77,7 +77,8 @@ public class ScreenActivity extends AppCompatActivity implements IBluetoothCallb
 
     @Override
     public void onConnect() {
-        String handshakeMessage = "hallo";
+        String handshakeMessage = "Ja";
         btConnectionHandler.write(handshakeMessage.getBytes());
+        //Intnet hier mit BT Hanler mitgabe
     }
 }

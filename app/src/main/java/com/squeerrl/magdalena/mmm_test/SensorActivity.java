@@ -31,6 +31,8 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
     private BluetoothConnectionHandler btConnectionHandler;
 
+    private String mvmntMsgToScreen = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,10 +101,12 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
             if(Math.abs(accelY - accelY_previous) > (rangeOfMotion/2))
             {
                 //Bewegung
+                mvmntMsgToScreen = String.valueOf(Math.abs(accelY - accelY_previous));
+
                 Log.d("[from speedCalculator]", "Y: " + accelY + " previous Y: " + accelY_previous);
                 accelerometerMove.setText(String.valueOf(Math.abs(accelY - accelY_previous)));
 
-                //Bewegung ausklingen lassen?
+                btConnectionHandler.write(mvmntMsgToScreen.getBytes());
             }
 
         }
@@ -122,7 +126,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
     @Override
     public void onMessageReceived(String msg) {
-        btConnectionHandler.write("abcd".getBytes());
+        btConnectionHandler.write("SE".getBytes());
     }
 
     @Override
